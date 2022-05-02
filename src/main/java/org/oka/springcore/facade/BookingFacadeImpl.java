@@ -4,6 +4,7 @@ import lombok.Setter;
 import org.oka.springcore.model.Event;
 import org.oka.springcore.model.Ticket;
 import org.oka.springcore.model.User;
+import org.oka.springcore.service.EventService;
 import org.oka.springcore.service.UserService;
 
 import java.util.Date;
@@ -12,15 +13,16 @@ import java.util.List;
 @Setter
 public class BookingFacadeImpl implements BookingFacade {
     private UserService userService;
+    private EventService eventService;
 
     @Override
-    public Event getEventById(long eventId) {
-        return null;
+    public Event getEventById(final long eventId) {
+        return eventService.getEventById(eventId);
     }
 
     @Override
-    public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        return null;
+    public List<Event> getEventsByTitle(final String title, final int pageSize, final int pageNum) {
+        return eventService.getEventsByTitle(title, pageSize, pageNum);
     }
 
     @Override

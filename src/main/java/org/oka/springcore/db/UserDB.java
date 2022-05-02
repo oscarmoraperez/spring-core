@@ -9,13 +9,21 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Serves as storage of User objects.
  */
 public class UserDB {
+    /**
+     * Simple structure to hold the users of the system (simulates a proper DB)
+     **/
+    private final List<User> usersDb = new ArrayList<>();
 
-    public List<User> usersDb = new ArrayList<>();
+    /**
+     * Holds the incremental id (PK) of the User object
+     **/
+    private final AtomicInteger index = new AtomicInteger(1);
 
     /**
      * Inits/populate the storage of Users.
@@ -26,7 +34,7 @@ public class UserDB {
         List<String> users = Files.readAllLines(ResourceUtils.getFile("classpath:users.txt").toPath());
         for (String user : users) {
             String[] split = user.split(";");
-            usersDb.add(new UserImpl(Integer.parseInt(split[0]), split[1], split[2]));
+            this.addUser(UserImpl.builder().name(split[0]).email(split[1]).build());
         }
     }
 
@@ -37,5 +45,18 @@ public class UserDB {
      */
     public List<User> getUsers() {
         return Collections.unmodifiableList(this.usersDb);
+    }
+
+    /**
+     * Adds a user to the repository
+     *
+     * @param user to add
+     * @return user added (includes PK)
+     */
+    public User addUser(final User user) {
+        user.setId(this.index.addAndGet(1));
+        usersDb.add(user);
+
+        return user;
     }
 }

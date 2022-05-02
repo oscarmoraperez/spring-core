@@ -6,7 +6,9 @@
 
     <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl">
         <property name="userService" ref="userService"/>
+        <property name="eventService" ref="eventService"/>
     </bean>
+
     <bean id="userService" class="org.oka.springcore.service.UserService">
         <property name="userDAO" ref="userDAO"/>
     </bean>
@@ -16,4 +18,15 @@
     </bean>
 
     <bean id="userDB" class="org.oka.springcore.db.UserDB" init-method="initBean"/>
+
+    <bean id="eventService" class="org.oka.springcore.service.EventService">
+        <property name="eventDAO" ref="eventDAO"/>
+    </bean>
+
+    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO">
+        <property name="eventDB" ref="eventDB"/>
+    </bean>
+
+    <bean id="eventDB" class="org.oka.springcore.db.EventDB" init-method="initBean"/>
+
 </beans>

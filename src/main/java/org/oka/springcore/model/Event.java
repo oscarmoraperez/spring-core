@@ -1,5 +1,6 @@
 package org.oka.springcore.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -19,9 +20,9 @@ public interface Event {
 
     void setTitle(String title);
 
-    Date getDate();
+    LocalDate getDate();
 
-    void setDate(Date date);
+    void setDate(LocalDate date);
 
     String toString();
 }

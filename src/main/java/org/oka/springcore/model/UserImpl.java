@@ -1,6 +1,7 @@
 package org.oka.springcore.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
+@Builder
 public class UserImpl implements User {
     private long id;
     private String name;
