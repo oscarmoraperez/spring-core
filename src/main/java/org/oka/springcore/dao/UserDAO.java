@@ -3,6 +3,7 @@ package org.oka.springcore.dao;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.oka.springcore.db.UserDB;
+import org.oka.springcore.model.Event;
 import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 import org.springframework.stereotype.Component;
@@ -38,12 +39,8 @@ public class UserDAO {
         return users.subList(init, end);
     }
 
-    public User create(final User user) {
-        int id = userDB.getUsers().size();
-        User userToSave = new UserImpl(id, user.getName(), user.getEmail());
-        this.userDB.getUsers().add(userToSave);
-
-        return userToSave;
+    public User addUser(final User user) {
+        return this.userDB.addUser(user);
     }
 
     public User update(final User user) {

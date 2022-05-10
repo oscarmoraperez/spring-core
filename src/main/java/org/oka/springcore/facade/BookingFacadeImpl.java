@@ -5,15 +5,17 @@ import org.oka.springcore.model.Event;
 import org.oka.springcore.model.Ticket;
 import org.oka.springcore.model.User;
 import org.oka.springcore.service.EventService;
+import org.oka.springcore.service.TicketService;
 import org.oka.springcore.service.UserService;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
 public class BookingFacadeImpl implements BookingFacade {
     private UserService userService;
     private EventService eventService;
+    private TicketService ticketService;
 
     @Override
     public Event getEventById(final long eventId) {
@@ -26,32 +28,32 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
-        return null;
+    public List<Event> getEventsForDay(final LocalDate day, final int pageSize, final int pageNum) {
+        return eventService.getEventsForDay(day, pageSize, pageNum);
     }
 
     @Override
-    public Event createEvent(Event event) {
-        return null;
+    public Event createEvent(final Event event) {
+        return eventService.createEvent(event);
     }
 
     @Override
-    public Event updateEvent(Event event) {
-        return null;
+    public Event updateEvent(final Event event) {
+        return eventService.updateEvent(event);
     }
 
     @Override
-    public boolean deleteEvent(long eventId) {
-        return false;
+    public boolean deleteEvent(final long eventId) {
+        return eventService.deleteEvent(eventId);
     }
 
     @Override
-    public User getUserById(long userId) {
+    public User getUserById(final long userId) {
         return userService.getUserById(userId);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(final String email) {
         return userService.getUserByEmail(email);
     }
 
@@ -71,27 +73,27 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public boolean deleteUser(long userId) {
+    public boolean deleteUser(final long userId) {
         return userService.deleteUser(userId);
     }
 
     @Override
-    public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
-        return null;
+    public Ticket bookTicket(final long userId, final long eventId, final int place, final Ticket.Category category) {
+        return ticketService.bookTicket(userId, eventId, place, category);
     }
 
     @Override
-    public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        return null;
+    public List<Ticket> getBookedTickets(final User user, final int pageSize, final int pageNum) {
+        return ticketService.getBookedTickets(user, pageSize, pageNum);
     }
 
     @Override
-    public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
-        return null;
+    public List<Ticket> getBookedTickets(final Event event, final int pageSize, final int pageNum) {
+        return ticketService.getBookedTickets(event, pageSize, pageNum);
     }
 
     @Override
-    public boolean cancelTicket(long ticketId) {
-        return false;
+    public boolean cancelTicket(final long ticketId) {
+        return ticketService.cancelTicket(ticketId);
     }
 }

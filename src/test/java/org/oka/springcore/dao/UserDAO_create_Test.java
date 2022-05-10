@@ -9,11 +9,8 @@ import org.oka.springcore.db.UserDB;
 import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,20 +21,28 @@ public class UserDAO_create_Test {
     UserDB userDB;
 
     @Test
-    void shouldCreateUser() {
+    void shouldCallDB() {
         // Given
         User user = new UserImpl(1, "John", "johndoe@doe.com");
-        User user2 = new UserImpl(2, "Jose", "jose@doe.com");
-        User user3 = new UserImpl(3, "Doe", "doe@doe.com");
-        List<User> usersMocked = new ArrayList<>();
-        usersMocked.add(user);
-        usersMocked.add(user2);
 
-        when(userDB.getUsers()).thenReturn(usersMocked);
         // When
-        User actual = userDAO.create(user3);
+        userDAO.addUser(user);
 
         // Then
-        assertThat(actual).isEqualTo(new UserImpl(2, "Doe", "doe@doe.com"));
+        verify(userDB).addUser(user);
+    }
+
+    @Test
+    void shouldReturnPersistedUser() {
+        // Given
+        User user = new UserImpl(1, "John", "johndoe@doe.com");
+        User userToReturn = new UserImpl(55, "John", "johndoe@doe.com");
+
+        when(userDB.addUser(user)).thenReturn(userToReturn);
+        // When
+        User actual = userDAO.addUser(user);
+
+        // Then
+        assertThat(actual).isEqualTo(userToReturn);
     }
 }

@@ -4,6 +4,7 @@ import org.oka.springcore.model.Event;
 import org.oka.springcore.model.Ticket;
 import org.oka.springcore.model.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public interface BookingFacade {
      * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
      * @return List of events.
      */
-    List<Event> getEventsForDay(Date day, int pageSize, int pageNum);
+    List<Event> getEventsForDay(LocalDate day, int pageSize, int pageNum);
 
     /**
      * Creates new event. Event id should be auto-generated.

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl">
+        <property name="userService" ref="userService"/>
+        <property name="eventService" ref="eventService"/>
+    </bean>
+
+    <bean id="userService" class="org.oka.springcore.service.UserService">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+
+    <bean id="userDAO" class="org.oka.springcore.dao.UserDAO">
+        <property name="userDB" ref="userDB"/>
+    </bean>
+
+    <bean id="userDB" class="org.oka.springcore.db.UserDB" init-method="initBean"/>
+
+    <bean id="eventService" class="org.oka.springcore.service.EventService">
+        <property name="eventDAO" ref="eventDAO"/>
+    </bean>
+
+    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO">
+        <property name="eventDB" ref="eventDB"/>
+    </bean>
+
+    <bean id="eventDB" class="org.oka.springcore.db.EventDB" init-method="initBean"/>
+
+</beans>

@@ -5,34 +5,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.oka.springcore.dao.EventDAO;
 import org.oka.springcore.dao.UserDAO;
+import org.oka.springcore.model.Event;
+import org.oka.springcore.model.EventImpl;
 import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserService_create_Test {
+public class EventService_deleteEvent_Test {
     @InjectMocks
-    UserService userService;
+    EventService eventService;
     @Mock
-    UserDAO userDAO;
+    EventDAO eventDAO;
 
     @Test
-    void shouldCallUserDAO() {
+    void shouldCallEventDAO() {
         // Given
-        User user = new UserImpl(1, "name", "name@domain.com");
 
         // When
-        userService.createUser(user);
+        eventService.deleteEvent(1);
 
         // Then
-        verify(userDAO).addUser(user);
+        verify(eventDAO).delete(1);
     }
 }

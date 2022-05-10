@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public User createUser(final User user) {
-        return userDAO.create(user);
+        return userDAO.addUser(user);
     }
 
     public User updateUser(final User user) {

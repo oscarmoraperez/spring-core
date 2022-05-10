@@ -10,11 +10,10 @@ import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,5 +35,18 @@ public class UserService_getUsersByName_Test {
 
         // Then
         verify(userDAO).getByName("name", 4, 6);
+    }
+
+    @Test
+    void shouldReturnUser() {
+        // Given
+        User user = new UserImpl(1, "Jose", "jose.canseco@aa.com");
+
+        when(userDAO.getByName("Jose", 4, 6)).thenReturn(List.of(user));
+        // When
+        List<User> actual = userService.getUsersByName("Jose", 4, 6);
+
+        // Then
+        assertThat(actual).containsExactly(user);
     }
 }

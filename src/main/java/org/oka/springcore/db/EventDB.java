@@ -49,7 +49,7 @@ public class EventDB {
     }
 
     /**
-     * Adds a event to the repository
+     * Adds an event to the repository
      *
      * @param event to add
      * @return event added (includes PK)
