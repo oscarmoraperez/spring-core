@@ -34,7 +34,7 @@ public class EventDAO {
         return events.subList(init, end);
     }
 
-    public List<Event> getByDate(LocalDate day, int pageSize, int pageNum) {
+    public List<Event> getByDate(final LocalDate day, final int pageSize, final int pageNum) {
         int init = pageNum * pageSize;
         int end = pageNum * pageSize + pageSize;
         List<Event> events = eventDB.getEvents().stream().filter(u -> u.getDate().equals(day)).collect(toList());
@@ -45,11 +45,11 @@ public class EventDAO {
         return events.subList(init, end);
     }
 
-    public Event create(Event event) {
+    public Event create(final Event event) {
         return eventDB.addEvent(event);
     }
 
-    public Event update(Event event) {
+    public Event update(final Event event) {
         Event eventToUpdate = eventDB.getEvents().stream().filter(e -> e.getId() == event.getId()).findFirst().orElseThrow();
         eventToUpdate.setTitle(event.getTitle());
         eventToUpdate.setDate(event.getDate());

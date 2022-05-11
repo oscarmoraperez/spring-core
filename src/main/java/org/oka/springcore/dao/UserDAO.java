@@ -3,9 +3,7 @@ package org.oka.springcore.dao;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.oka.springcore.db.UserDB;
-import org.oka.springcore.model.Event;
 import org.oka.springcore.model.User;
-import org.oka.springcore.model.UserImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

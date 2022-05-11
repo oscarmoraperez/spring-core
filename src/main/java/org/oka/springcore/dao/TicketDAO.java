@@ -46,7 +46,7 @@ public class TicketDAO {
         return tickets.subList(init, end);
     }
 
-    public boolean cancelTicket(long ticketId) {
+    public boolean cancelTicket(final long ticketId) {
         Optional<Ticket> ticketToDelete = ticketDB.getTickets().stream().filter(t -> t.getId() == ticketId).findFirst();
         if (ticketToDelete.isEmpty()) {
             return false;
