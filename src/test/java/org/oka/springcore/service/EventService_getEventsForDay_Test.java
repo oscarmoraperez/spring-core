@@ -51,6 +51,6 @@ public class EventService_getEventsForDay_Test {
         List<Event> events = eventService.getEventsForDay(day, pageSize, pageNum);
 
         // Then
-        assertThat(events).containsAll(events);
+        assertThat(events).containsAll(List.of(event));
     }
 }

@@ -9,7 +9,9 @@ import org.oka.springcore.dao.UserDAO;
 import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserService_update_Test {
@@ -28,5 +30,18 @@ public class UserService_update_Test {
 
         // Then
         verify(userDAO).update(user);
+    }
+
+    @Test
+    void shouldReturnUser() {
+        // Given
+        User user = new UserImpl(1, "name", "name@domain.com");
+
+        when(userDAO.update(user)).thenReturn(user);
+        // When
+        User persisted = userService.updateUser(user);
+
+        // Then
+        assertThat(persisted).isEqualTo(user);
     }
 }

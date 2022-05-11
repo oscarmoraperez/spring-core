@@ -49,6 +49,6 @@ public class EventService_getEventsByTitle_Test {
         List<Event> eventsByTitle = eventService.getEventsByTitle(title, pageSize, pageNum);
 
         // Then
-        assertThat(eventsByTitle).containsAll(eventsByTitle);
+        assertThat(eventsByTitle).containsAll(List.of(event));
     }
 }

@@ -9,7 +9,9 @@ import org.oka.springcore.dao.UserDAO;
 import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserService_delete_Test {
@@ -28,5 +30,17 @@ public class UserService_delete_Test {
 
         // Then
         verify(userDAO).delete(1);
+    }
+
+    @Test
+    void shouldReturnTrue() {
+        // Given
+
+        when(userDAO.delete(1)).thenReturn(true);
+        // When
+        boolean result = userService.deleteUser(1);
+
+        // Then
+        assertThat(result).isTrue();
     }
 }

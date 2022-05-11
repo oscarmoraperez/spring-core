@@ -28,7 +28,7 @@ public class TicketDAO_cancelTicket_Test {
     TicketDB ticketDB;
 
     @Test
-    void shouldDeleteUser() {
+    void shouldDeleteTicket() {
         // Given
         TicketImpl ticket = TicketImpl.builder().id(1).userId(1).eventId(3).place(5).category(BAR).build();
         TicketImpl ticket1 = TicketImpl.builder().id(2).userId(3).eventId(3).place(10).category(BAR).build();
@@ -43,5 +43,23 @@ public class TicketDAO_cancelTicket_Test {
 
         // Then
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    void shouldReturnFalse() {
+        // Given
+        TicketImpl ticket = TicketImpl.builder().id(1).userId(1).eventId(3).place(5).category(BAR).build();
+        TicketImpl ticket1 = TicketImpl.builder().id(2).userId(3).eventId(3).place(10).category(BAR).build();
+
+        List<Ticket> ticketsMocked = new ArrayList<>();
+        ticketsMocked.add(ticket);
+        ticketsMocked.add(ticket1);
+
+        when(ticketDB.getTickets()).thenReturn(ticketsMocked);
+        // When
+        boolean actual = ticketDAO.cancelTicket(4);
+
+        // Then
+        assertThat(actual).isFalse();
     }
 }

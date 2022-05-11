@@ -13,21 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("/test-configuration.xml")
-public class BookingFacadeImpl_createUser_IT {
+public class BookingFacadeImpl_deleteUser_IT {
     @Autowired
     BookingFacade bookingFacade;
     @Autowired
     UserDB userDB;
 
     @Test
-    public void shouldCreateUser() {
+    public void shouldDeleteUser() {
         // Given
         User user = UserImpl.builder().name("Peter").email("peter@domain.com").build();
+        User persisted = bookingFacade.createUser(user);
+        assertThat(userDB.getUsers()).contains(persisted);
 
         // When
-        User persisted = bookingFacade.createUser(user);
+        bookingFacade.deleteUser(persisted.getId());
 
         // Then
-        assertThat(userDB.getUsers()).contains(persisted);
+        assertThat(userDB.getUsers()).doesNotContain(persisted);
     }
 }

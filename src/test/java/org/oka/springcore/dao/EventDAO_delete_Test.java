@@ -24,7 +24,7 @@ public class EventDAO_delete_Test {
     EventDB eventDB;
 
     @Test
-    void shouldDeleteUser() {
+    void shouldReturnTrue() {
         // Given
         Event event = new EventImpl(1, "title", LocalDate.parse("2022-05-05"));
         Event event2 = new EventImpl(2, "title2", LocalDate.parse("2020-05-09"));
@@ -39,5 +39,23 @@ public class EventDAO_delete_Test {
 
         // Then
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    void shouldReturnFalse() {
+        // Given
+        Event event = new EventImpl(1, "title", LocalDate.parse("2022-05-05"));
+        Event event2 = new EventImpl(2, "title2", LocalDate.parse("2020-05-09"));
+
+        List<Event> eventsMocked = new ArrayList<>();
+        eventsMocked.add(event);
+        eventsMocked.add(event2);
+
+        when(eventDB.getEvents()).thenReturn(eventsMocked);
+        // When
+        boolean actual = eventDAO.delete(3);
+
+        // Then
+        assertThat(actual).isFalse();
     }
 }

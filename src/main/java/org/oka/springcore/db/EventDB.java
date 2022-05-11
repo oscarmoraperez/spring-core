@@ -45,7 +45,7 @@ public class EventDB {
      * @return list of Event
      */
     public List<Event> getEvents() {
-        return Collections.unmodifiableList(this.eventDb);
+        return eventDb;
     }
 
     /**

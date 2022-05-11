@@ -11,9 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Serves as storage of User objects.
- */
 public class UserDB {
     /**
      * Simple structure to hold the users of the system (simulates a proper DB)
@@ -44,7 +41,7 @@ public class UserDB {
      * @return list of User
      */
     public List<User> getUsers() {
-        return Collections.unmodifiableList(this.usersDb);
+        return this.usersDb;
     }
 
     /**

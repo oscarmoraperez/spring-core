@@ -5,9 +5,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.oka.springcore.model.Event;
+import org.oka.springcore.model.EventImpl;
 import org.oka.springcore.service.EventService;
 
+import java.util.List;
+
+import static java.time.LocalDate.now;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BookingFacadeImpl_getEventsByTitle_Test {
@@ -28,5 +37,18 @@ public class BookingFacadeImpl_getEventsByTitle_Test {
 
         // Then
         verify(eventService).getEventsByTitle(title, pageSize, pageNum);
+    }
+
+    @Test
+    void shouldReturnEvents() {
+        // Given
+        Event event = new EventImpl(1, "title", now());
+
+        when(eventService.getEventsByTitle("title", 1, 3)).thenReturn(List.of(event));
+        // When
+        List<Event> actual = bookingFacadeImpl.getEventsByTitle("title", 1, 3);
+
+        // Then
+        assertThat(actual).isEqualTo(List.of(event));
     }
 }

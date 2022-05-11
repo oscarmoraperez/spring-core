@@ -9,7 +9,9 @@ import org.oka.springcore.model.User;
 import org.oka.springcore.model.UserImpl;
 import org.oka.springcore.service.UserService;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BookingFacadeImpl_createUser_Test {
@@ -28,5 +30,18 @@ public class BookingFacadeImpl_createUser_Test {
 
         // Then
         verify(userService).createUser(user);
+    }
+
+    @Test
+    void shouldReturnUser() {
+        // Given
+        User user = new UserImpl(1, "name", "email");
+
+        when(userService.createUser(user)).thenReturn(user);
+        // When
+        User actual = bookingFacadeImpl.createUser(user);
+
+        // Then
+        assertThat(actual).isEqualTo(user);
     }
 }

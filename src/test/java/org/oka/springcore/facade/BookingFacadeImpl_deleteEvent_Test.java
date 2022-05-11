@@ -2,12 +2,15 @@ package org.oka.springcore.facade;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.oka.springcore.service.EventService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,16 +33,17 @@ public class BookingFacadeImpl_deleteEvent_Test {
         verify(eventService).deleteEvent(eventId);
     }
 
-    @Test
-    void shouldReturnTrue() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void shouldReturnTrue(final boolean input) {
         // Given
         long eventId = 1;
 
-        when(eventService.deleteEvent(eventId)).thenReturn(true);
+        when(eventService.deleteEvent(eventId)).thenReturn(input);
         // When
         boolean result = bookingFacadeImpl.deleteEvent(eventId);
 
         // Then
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(input);
     }
 }

@@ -16,14 +16,17 @@ public class EventService {
     private EventDAO eventDAO;
 
     public Event getEventById(final long eventId) {
+        log.info("Retrieving event by id: " + eventId);
         return eventDAO.getById(eventId).orElseThrow(() -> new RuntimeException("Event not found (byId: " + eventId + ")"));
     }
 
     public List<Event> getEventsByTitle(final String title, final int pageSize, final int pageNum) {
+        log.info("Retrieving events by title: " + title);
         return eventDAO.getByTitle(title, pageSize, pageNum);
     }
 
     public List<Event> getEventsForDay(final LocalDate day, final int pageSize, final int pageNum) {
+        log.info("Retrieving events by day: " + day);
         return eventDAO.getByDate(day, pageSize, pageNum);
     }
 
@@ -33,10 +36,12 @@ public class EventService {
     }
 
     public Event updateEvent(final Event event) {
+        log.info("Updating event: " + event);
         return eventDAO.update(event);
     }
 
     public boolean deleteEvent(final long eventId) {
+        log.info("Deleting event: " + eventId);
         return eventDAO.delete(eventId);
     }
 }

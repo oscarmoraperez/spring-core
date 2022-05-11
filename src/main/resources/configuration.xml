@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl">
-        <property name="userService" ref="userService"/>
-        <property name="eventService" ref="eventService"/>
-    </bean>
+    <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl" p:userService-ref="userService"
+          p:eventService-ref="eventService" p:ticketService-ref="ticketService"/>
 
-    <bean id="userService" class="org.oka.springcore.service.UserService">
-        <property name="userDAO" ref="userDAO"/>
-    </bean>
+    <bean id="userService" class="org.oka.springcore.service.UserService" p:userDAO-ref="userDAO"/>
 
-    <bean id="userDAO" class="org.oka.springcore.dao.UserDAO">
-        <property name="userDB" ref="userDB"/>
-    </bean>
+    <bean id="userDAO" class="org.oka.springcore.dao.UserDAO" p:userDB-ref="userDB"/>
 
     <bean id="userDB" class="org.oka.springcore.db.UserDB" init-method="initBean"/>
 
-    <bean id="eventService" class="org.oka.springcore.service.EventService">
-        <property name="eventDAO" ref="eventDAO"/>
-    </bean>
+    <bean id="eventService" class="org.oka.springcore.service.EventService" p:eventDAO-ref="eventDAO"/>
 
-    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO">
-        <property name="eventDB" ref="eventDB"/>
-    </bean>
+    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO" p:eventDB-ref="eventDB"/>
 
     <bean id="eventDB" class="org.oka.springcore.db.EventDB" init-method="initBean"/>
+
+    <bean id="ticketService" class="org.oka.springcore.service.TicketService" p:ticketDAO-ref="ticketDAO"/>
+
+    <bean id="ticketDAO" class="org.oka.springcore.dao.TicketDAO" p:ticketDB-ref="ticketDB"/>
+
+    <bean id="ticketDB" class="org.oka.springcore.db.TicketDB" init-method="initBean"/>
 
 </beans>

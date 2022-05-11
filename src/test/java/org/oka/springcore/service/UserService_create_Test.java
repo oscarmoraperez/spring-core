@@ -35,4 +35,17 @@ public class UserService_create_Test {
         // Then
         verify(userDAO).addUser(user);
     }
+
+    @Test
+    void shouldReturnUser() {
+        // Given
+        User user = new UserImpl(1, "name", "name@domain.com");
+
+        when(userDAO.addUser(user)).thenReturn(user);
+        // When
+        User persisted = userService.createUser(user);
+
+        // Then
+        assertThat(persisted).isEqualTo(user);
+    }
 }

@@ -28,7 +28,7 @@ public class TicketDB {
      * @param ticket to add
      * @return ticket added (includes PK)
      */
-    public Ticket addTicket(final TicketImpl ticket) {
+    public Ticket addTicket(final Ticket ticket) {
         ticket.setId(this.index.addAndGet(1));
         ticketDb.add(ticket);
 
@@ -58,6 +58,6 @@ public class TicketDB {
      * @return list of Tickt
      */
     public List<Ticket> getTickets() {
-        return Collections.unmodifiableList(this.ticketDb);
+        return this.ticketDb;
     }
 }
