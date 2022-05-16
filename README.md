@@ -24,3 +24,5 @@ This maven-based project contains the exercises defined in the 'spring-code' mod
 5) Spring statements are also displayed during ITs execution.
 
 6) p-namespce used in the configuration.xml for the sake of compactness.
+
+7) Example test data automatically populated via the classic 'init-method' in the configuration.xml 
