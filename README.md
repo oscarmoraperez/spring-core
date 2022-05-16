@@ -22,3 +22,5 @@ This maven-based project contains the exercises defined in the 'spring-code' mod
 4) Lombok slf4j logging added at Service level. 
 
 5) Spring statements are also displayed during ITs execution.
+
+6) p-namespce used in the configuration.xml for the sake of compactness.
