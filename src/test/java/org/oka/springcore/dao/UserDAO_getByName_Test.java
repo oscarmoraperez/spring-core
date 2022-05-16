@@ -12,6 +12,9 @@ import org.oka.springcore.model.UserImpl;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,65 +23,49 @@ public class UserDAO_getByName_Test {
     UserDAO userDAO;
     @Mock
     UserDB userDB;
-
-    private final List<User> USERS = List.of(
-            new UserImpl(1, "John", "johndoe@doe.com"),
-            new UserImpl(2, "John", "johndoe2@doe.com"),
-            new UserImpl(3, "John", "johndoe3@doe.com"),
-            new UserImpl(4, "John", "johndoe4@doe.com"),
-            new UserImpl(5, "Jose", "jose@domain.com"),
-            new UserImpl(6, "Jose", "jose2@domain.com"),
-            new UserImpl(7, "Jose", "jose3@domain.com"));
+    @Mock
+    Pageable<User> pageable;
 
     @Test
-    void shouldReturnZeroUsers() {
+    void shouldCallUserDB() {
         // Given
+        User user = new UserImpl(1, "Peter", "peter@dom.com");
 
-        when(userDB.getUsers()).thenReturn(USERS);
+        when(userDB.getUsers()).thenReturn(List.of(user));
         // When
-        List<User> actual = userDAO.getByName("non-existing", 5, 12);
+        userDAO.getByName("non-existing", 5, 12);
 
         // Then
-        assertThat(actual).isEmpty();
+        verify(userDB).getUsers();
     }
 
     @Test
-    void shouldReturnPageOneWithTwoUsers() {
+    void shouldCallPageable() {
         // Given
+        User user1 = new UserImpl(1, "John", "johndoe@doe.com");
+        User user2 = new UserImpl(2, "John", "johndoe2@doe.com");
 
-        when(userDB.getUsers()).thenReturn(USERS);
+        when(userDB.getUsers()).thenReturn(List.of(user1, user2));
+        when(pageable.paginate(anyList(), anyInt(), anyInt())).thenReturn(List.of(user1));
+        // When
+        userDAO.getByName("John", 2, 0);
+
+        // Then
+        verify(pageable).paginate(List.of(user1, user2), 2, 0);
+    }
+
+    @Test
+    void shouldReturnUsers() {
+        // Given
+        User user1 = new UserImpl(1, "John", "johndoe@doe.com");
+        User user2 = new UserImpl(2, "John", "johndoe2@doe.com");
+
+        when(userDB.getUsers()).thenReturn(List.of(user1, user2));
+        when(pageable.paginate(anyList(), anyInt(), anyInt())).thenReturn(List.of(user1, user2));
         // When
         List<User> actual = userDAO.getByName("John", 2, 0);
 
         // Then
-        assertThat(actual).containsExactly(
-                new UserImpl(1, "John", "johndoe@doe.com"),
-                new UserImpl(2, "John", "johndoe2@doe.com"));
-    }
-
-    @Test
-    void shouldReturnPageTwoWithTwoUsers() {
-        // Given
-
-        when(userDB.getUsers()).thenReturn(USERS);
-        // When
-        List<User> actual = userDAO.getByName("John", 2, 1);
-
-        // Then
-        assertThat(actual).containsExactly(
-                new UserImpl(3, "John", "johndoe3@doe.com"),
-                new UserImpl(4, "John", "johndoe4@doe.com"));
-    }
-
-    @Test
-    void shouldReturnPageOneWithOneUsers() {
-        // Given
-
-        when(userDB.getUsers()).thenReturn(USERS);
-        // When
-        List<User> actual = userDAO.getByName("Jose", 2, 1);
-
-        // Then
-        assertThat(actual).containsExactly(new UserImpl(7, "Jose", "jose3@domain.com"));
+        assertThat(actual).containsExactly(user1, user2);
     }
 }

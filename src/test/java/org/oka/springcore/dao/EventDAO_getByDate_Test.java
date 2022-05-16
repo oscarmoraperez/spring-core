@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,66 +22,44 @@ public class EventDAO_getByDate_Test {
     EventDAO eventDAO;
     @Mock
     EventDB eventDB;
-
-    private final List<Event> EVENTS = List.of(
-            EventImpl.builder().id(1).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-            EventImpl.builder().id(2).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-            EventImpl.builder().id(3).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-            EventImpl.builder().id(4).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-            EventImpl.builder().id(5).title("title_2").date(LocalDate.parse("2020-05-07")).build(),
-            EventImpl.builder().id(6).title("title_2").date(LocalDate.parse("2020-05-07")).build(),
-            EventImpl.builder().id(7).title("title_2").date(LocalDate.parse("2020-05-07")).build());
+    @Mock
+    Pageable<Event> pageable;
 
     @Test
-    void shouldReturnZeroEvents() {
+    void shouldCallEventDB() {
         // Given
 
-        when(eventDB.getEvents()).thenReturn(EVENTS);
         // When
-        List<Event> actual = eventDAO.getByDate(LocalDate.now(), 5, 12);
+        eventDAO.getByDate(LocalDate.now(), 1, 1);
 
         // Then
-        assertThat(actual).isEmpty();
+        verify(eventDB).getEvents();
     }
 
     @Test
-    void shouldReturnPageOneWithTwoEvents() {
+    void shouldCallPageable() {
         // Given
+        Event event = new EventImpl(1, "title ", LocalDate.now());
 
-        when(eventDB.getEvents()).thenReturn(EVENTS);
+        when(eventDB.getEvents()).thenReturn(List.of(event));
         // When
-        List<Event> actual = eventDAO.getByDate(LocalDate.parse("2020-05-05"), 2, 0);
+        eventDAO.getByDate(LocalDate.now(), 1, 5);
 
         // Then
-        assertThat(actual).containsExactly(
-                EventImpl.builder().id(1).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-                EventImpl.builder().id(2).title("title_1").date(LocalDate.parse("2020-05-05")).build());
+        verify(pageable).paginate(List.of(event), 1, 5);
     }
 
     @Test
-    void shouldReturnPageTwoWithTwoEvents() {
+    void shouldReturnTickets() {
         // Given
+        Event event = new EventImpl(1, "title ", LocalDate.now());
 
-        when(eventDB.getEvents()).thenReturn(EVENTS);
+        when(eventDB.getEvents()).thenReturn(List.of(event));
+        when(pageable.paginate(List.of(event), 1, 5)).thenReturn(List.of(event));
         // When
-        List<Event> actual = eventDAO.getByDate(LocalDate.parse("2020-05-05"), 2, 1);
+        List<Event> actual = eventDAO.getByDate(LocalDate.now(), 1, 5);
 
         // Then
-        assertThat(actual).containsExactly(
-                EventImpl.builder().id(3).title("title_1").date(LocalDate.parse("2020-05-05")).build(),
-                EventImpl.builder().id(4).title("title_1").date(LocalDate.parse("2020-05-05")).build());
-    }
-
-    @Test
-    void shouldReturnPageOneWithOneEvent() {
-        // Given
-
-        when(eventDB.getEvents()).thenReturn(EVENTS);
-        // When
-        List<Event> actual = eventDAO.getByDate(LocalDate.parse("2020-05-07"), 2, 1);
-
-        // Then
-        assertThat(actual).containsExactly(EventImpl.builder().id(7).title("title_2")
-                .date(LocalDate.parse("2020-05-07")).build());
+        assertThat(actual).containsExactly(event);
     }
 }

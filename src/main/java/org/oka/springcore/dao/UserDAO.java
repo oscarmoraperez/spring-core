@@ -1,40 +1,36 @@
 package org.oka.springcore.dao;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.oka.springcore.db.UserDB;
 import org.oka.springcore.model.User;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
-@RequiredArgsConstructor
 @Setter
-@Component
 public class UserDAO {
 
     private UserDB userDB;
+    private Pageable<User> pageable;
 
     public Optional<User> getById(final long id) {
         return userDB.getUsers().stream().filter(u -> u.getId() == id).findFirst();
     }
 
     public Optional<User> getByEmail(final String email) {
-        return userDB.getUsers().stream().filter(u -> u.getEmail().equals(email)).findFirst();
+        return userDB.getUsers().stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findFirst();
     }
 
     public List<User> getByName(final String name, final int pageSize, final int pageNum) {
-        int init = pageNum * pageSize;
-        int end = pageNum * pageSize + pageSize;
-        List<User> users = userDB.getUsers().stream().filter(u -> u.getName().equals(name)).collect(toList());
+        List<User> users = userDB.getUsers().stream()
+                .filter(u -> u.getName().equals(name))
+                .collect(toList());
 
-        init = init > users.size() ? 0 : init;
-        end = Math.min(end, users.size());
-
-        return users.subList(init, end);
+        return pageable.paginate(users, pageSize, pageNum);
     }
 
     public User addUser(final User user) {
@@ -42,7 +38,10 @@ public class UserDAO {
     }
 
     public User update(final User user) {
-        User userToUpdate = userDB.getUsers().stream().filter(u -> u.getId() == user.getId()).findFirst().orElseThrow();
+        User userToUpdate = userDB.getUsers().stream()
+                .filter(u -> u.getId() == user.getId())
+                .findFirst()
+                .orElseThrow();
         userToUpdate.setName(user.getName());
         userToUpdate.setEmail(user.getEmail());
 

@@ -14,40 +14,36 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
-@RequiredArgsConstructor
 @Setter
-@Component
 public class TicketDAO {
+
     private TicketDB ticketDB;
+    private Pageable<Ticket> pageable;
 
     public Ticket bookTicket(final TicketImpl ticket) {
         return ticketDB.addTicket(ticket);
     }
 
     public List<Ticket> getBookedTickets(final User user, final int pageSize, final int pageNum) {
-        int init = pageNum * pageSize;
-        int end = pageNum * pageSize + pageSize;
-        List<Ticket> tickets = ticketDB.getTickets().stream().filter(t -> t.getUserId() == user.getId()).collect(toList());
+        List<Ticket> tickets = ticketDB.getTickets().stream()
+                .filter(t -> t.getUserId() == user.getId())
+                .collect(toList());
 
-        init = init > tickets.size() ? 0 : init;
-        end = Math.min(end, tickets.size());
-
-        return tickets.subList(init, end);
+        return pageable.paginate(tickets, pageSize, pageNum);
     }
 
     public List<Ticket> getBookedTickets(final Event event, int pageSize, int pageNum) {
-        int init = pageNum * pageSize;
-        int end = pageNum * pageSize + pageSize;
-        List<Ticket> tickets = ticketDB.getTickets().stream().filter(t -> t.getEventId() == event.getId()).collect(toList());
+        List<Ticket> tickets = ticketDB.getTickets().stream()
+                .filter(t -> t.getEventId() == event.getId())
+                .collect(toList());
 
-        init = init > tickets.size() ? 0 : init;
-        end = Math.min(end, tickets.size());
-
-        return tickets.subList(init, end);
+        return pageable.paginate(tickets, pageSize, pageNum);
     }
 
     public boolean cancelTicket(final long ticketId) {
-        Optional<Ticket> ticketToDelete = ticketDB.getTickets().stream().filter(t -> t.getId() == ticketId).findFirst();
+        Optional<Ticket> ticketToDelete = ticketDB.getTickets().stream()
+                .filter(t -> t.getId() == ticketId)
+                .findFirst();
         if (ticketToDelete.isEmpty()) {
             return false;
         }

@@ -5,25 +5,25 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl" p:userService-ref="userService"
-          p:eventService-ref="eventService" p:ticketService-ref="ticketService"/>
+    <bean id="bookingFacade" class="org.oka.springcore.facade.BookingFacadeImpl"/>
 
-    <bean id="userService" class="org.oka.springcore.service.UserService" p:userDAO-ref="userDAO"/>
+    <bean id="userService" class="org.oka.springcore.service.UserService"/>
 
-    <bean id="userDAO" class="org.oka.springcore.dao.UserDAO" p:userDB-ref="userDB"/>
+    <bean id="userDAO" class="org.oka.springcore.dao.UserDAO" p:userDB-ref="userDB" p:pageable-ref="pageable"/>
 
     <bean id="userDB" class="org.oka.springcore.db.UserDB" init-method="initBean"/>
 
-    <bean id="eventService" class="org.oka.springcore.service.EventService" p:eventDAO-ref="eventDAO"/>
+    <bean id="eventService" class="org.oka.springcore.service.EventService"/>
 
-    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO" p:eventDB-ref="eventDB"/>
+    <bean id="eventDAO" class="org.oka.springcore.dao.EventDAO" p:eventDB-ref="eventDB" p:pageable-ref="pageable"/>
 
     <bean id="eventDB" class="org.oka.springcore.db.EventDB" init-method="initBean"/>
 
-    <bean id="ticketService" class="org.oka.springcore.service.TicketService" p:ticketDAO-ref="ticketDAO"/>
+    <bean id="ticketService" class="org.oka.springcore.service.TicketService"/>
 
-    <bean id="ticketDAO" class="org.oka.springcore.dao.TicketDAO" p:ticketDB-ref="ticketDB"/>
+    <bean id="ticketDAO" class="org.oka.springcore.dao.TicketDAO" p:ticketDB-ref="ticketDB" p:pageable-ref="pageable"/>
 
     <bean id="ticketDB" class="org.oka.springcore.db.TicketDB" init-method="initBean"/>
 
+    <bean id="pageable" class="org.oka.springcore.dao.Pageable"/>
 </beans>

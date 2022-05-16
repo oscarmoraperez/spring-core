@@ -14,8 +14,9 @@ import org.oka.springcore.model.UserImpl;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.oka.springcore.model.Ticket.Category.*;
+import static org.oka.springcore.model.Ticket.Category.BAR;
 
 @ExtendWith(MockitoExtension.class)
 public class TicketDAO_getBookedTickets_Test {
@@ -23,71 +24,47 @@ public class TicketDAO_getBookedTickets_Test {
     TicketDAO ticketDAO;
     @Mock
     TicketDB ticketDB;
-
-    private final List<Ticket> TICKETS = List.of(
-            new TicketImpl(1, 1, 1, BAR, 55),
-            new TicketImpl(2, 2, 1, PREMIUM, 33),
-            new TicketImpl(3, 3, 1, STANDARD, 44),
-            new TicketImpl(4, 4, 1, STANDARD, 77),
-            new TicketImpl(5, 5, 2, BAR, 88),
-            new TicketImpl(6, 6, 2, PREMIUM, 99),
-            new TicketImpl(7, 7, 2, STANDARD, 22));
+    @Mock
+    Pageable<Ticket> pageable;
 
     @Test
-    void shouldReturnZeroTickets() {
+    void shouldCallTicketDB() {
         // Given
         User user = UserImpl.builder().id(8).name("Jose").build();
 
-        when(ticketDB.getTickets()).thenReturn(TICKETS);
         // When
-        List<Ticket> actual = ticketDAO.getBookedTickets(user, 1, 1);
+        ticketDAO.getBookedTickets(user, 1, 1);
 
         // Then
-        assertThat(actual).isEmpty();
+        verify(ticketDB).getTickets();
     }
 
     @Test
-    void shouldReturnPageOneWithTwoTickets() {
+    void shouldCallPageable() {
         // Given
         User user = UserImpl.builder().id(1).name("Jose").build();
+        Ticket ticket = new TicketImpl(1, 1, 1, BAR, 44);
 
-        when(ticketDB.getTickets()).thenReturn(TICKETS);
+        when(ticketDB.getTickets()).thenReturn(List.of(ticket));
         // When
-        List<Ticket> actual = ticketDAO.getBookedTickets(user, 2, 0);
+        ticketDAO.getBookedTickets(user, 1, 5);
 
         // Then
-        assertThat(actual).containsExactly(
-                new TicketImpl(1, 1, 1, BAR, 55),
-                new TicketImpl(2, 2, 1, PREMIUM, 33));
+        verify(pageable).paginate(List.of(ticket), 1, 5);
     }
 
     @Test
-    void shouldReturnPageTwoWithTwoUsers() {
+    void shouldReturnTickets() {
         // Given
         User user = UserImpl.builder().id(1).name("Jose").build();
+        Ticket ticket = new TicketImpl(1, 1, 1, BAR, 44);
 
-        when(ticketDB.getTickets()).thenReturn(TICKETS);
+        when(ticketDB.getTickets()).thenReturn(List.of(ticket));
+        when(pageable.paginate(List.of(ticket), 1, 5)).thenReturn(List.of(ticket));
         // When
-        List<Ticket> actual = ticketDAO.getBookedTickets(user, 2, 1);
+        List<Ticket> actual = ticketDAO.getBookedTickets(user, 1, 5);
 
         // Then
-        assertThat(actual).containsExactly(
-                new TicketImpl(3, 3, 1, STANDARD, 44),
-                new TicketImpl(4, 4, 1, STANDARD, 77));
-    }
-
-    @Test
-    void shouldReturnPageOneWithOneTicket() {
-        // Given
-        User user = UserImpl.builder().id(2).name("Jose").build();
-
-        when(ticketDB.getTickets()).thenReturn(TICKETS);
-        // When
-        List<Ticket> actual = ticketDAO.getBookedTickets(user, 2, 1);
-
-        // Then
-        assertThat(actual).containsExactly(
-                new TicketImpl(7, 7, 2, STANDARD, 22)
-        );
+        assertThat(actual).containsExactly(ticket);
     }
 }

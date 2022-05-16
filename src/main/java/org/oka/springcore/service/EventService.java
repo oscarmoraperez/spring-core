@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
-@Setter
 @Slf4j
 public class EventService {
     @Autowired

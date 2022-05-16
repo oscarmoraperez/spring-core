@@ -1,5 +1,6 @@
 package org.oka.springcore.facade;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.oka.springcore.model.Event;
 import org.oka.springcore.model.Ticket;
@@ -11,11 +12,11 @@ import org.oka.springcore.service.UserService;
 import java.time.LocalDate;
 import java.util.List;
 
-@Setter
+@RequiredArgsConstructor
 public class BookingFacadeImpl implements BookingFacade {
-    private UserService userService;
-    private EventService eventService;
-    private TicketService ticketService;
+    private final UserService userService;
+    private final EventService eventService;
+    private final TicketService ticketService;
 
     @Override
     public Event getEventById(final long eventId) {
