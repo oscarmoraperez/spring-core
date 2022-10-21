@@ -1,6 +1,6 @@
-# Java Mentoring Program: Spring Core 
+# Ticketing Service based on Spring Core
 
-This maven-based project contains the exercises defined in the 'spring-code' module of Java Mentoring program.
+Maven based project to implement a ticketing service based on main Spring Core functionalities.
 
 0) To run the project one have the following options:
 
